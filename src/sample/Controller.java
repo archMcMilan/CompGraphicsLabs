@@ -83,7 +83,7 @@ public class Controller {
     @FXML
     private TextField trigFunction;
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private Rose rose;
     @FXML
     private TextField shiftX1;
@@ -106,30 +106,7 @@ public class Controller {
         figure = createFigure(root,figurePosX, figurePosY);
         createCenter(root, centerPosX, centerPosY);
         rebuildFigure(root);
-
-        String message="";
-        pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            String msg;
-            @Override
-            public void handle(MouseEvent event) {
-                msg="(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
-                        "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
-                        "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
-                //System.out.println(msg);
-            }
-
-            public String getMsg() {
-                return msg;
-            }
-        });
-        pane.setOnMouseClicked(mouseHandler);
-
     }
-    private final EventHandler<MouseEvent> mouseHandler = event -> {
-        if (event.getX() > 1) {
-            System.out.println("double clicked!");
-        }
-    };
 
     private void initStartPos(int x, int y) {
         figurePosX =x;
@@ -148,17 +125,18 @@ public class Controller {
         coordinates.drawGrid();
         coordinates.drawAxis();
     }
+    private Group preparePane() {
+        Group root = new Group();
+        buildCoordinates(root,coordinatesPosX,coordinatesPosY);
+        rebuiltPane(root);
+        return root;
+    }
     private Figure createFigure(Group root,int figurePosX, int figurePosY) {
         Figure figure = new Figure(root,figurePosX, figurePosY);
         figure.setA(Integer.parseInt(inputA.getText()));
         figure.setB(-Integer.parseInt(inputB.getText()));
         figure.setC(-Integer.parseInt(inputC.getText()));
         return figure;
-    }
-
-    private void createCenter(Group root, int centerPosX, int centerPosY) {
-        center =new Circle(centerPosX,centerPosY,3);
-        root.getChildren().addAll(center);
     }
 
     public Figure rebuildFigure(Group root){
@@ -173,31 +151,32 @@ public class Controller {
     }
 
     public void shift(){
+        shifting(figure,shiftX.getText(),shiftY.getText(),centerPosX,centerPosY);
+    }
+    private void shifting(Figure figure, String shiftX,String shiftY, int centerPosX, int centerPosY) {
         Group root = preparePane();
 
-        shiftPosX+=Integer.parseInt(shiftX.getText());
-        shiftPosY+=Integer.parseInt(shiftY.getText());
+        shiftPosX+=Integer.parseInt(shiftX);
+        shiftPosY+=Integer.parseInt(shiftY);
         figure.setGroup(root);
-        figure.shiftFigure(Integer.parseInt(shiftX.getText()),Integer.parseInt(shiftY.getText()));
+        figure.shiftFigure(Integer.parseInt(shiftX),Integer.parseInt(shiftY));
         figure.drawFigure();
         createCenter(root, centerPosX, centerPosY);
     }
 
-    private Group preparePane() {
-        Group root = new Group();
-        buildCoordinates(root,coordinatesPosX,coordinatesPosY);
-        rebuiltPane(root);
-        return root;
+    public void turn(){
+        turning(figure,angleTurning.getText(),centerPosX,centerPosY);
     }
-
-    public void turning(){
+    private void turning(Figure figure, String angle, int centerPosX, int centerPosY){
         Group root = preparePane();
-
         figure.setGroup(root);
-        figure.turnFigure(Double.parseDouble(angleTurning.getText()));
+        figure.turnFigure(Double.parseDouble(angle));
         figure.drawFigure();
         createCenter(root, centerPosX, centerPosY);
     }
+
+
+
 
     public void affine(){
         Group root = preparePane();
@@ -245,24 +224,29 @@ public class Controller {
         figure.drawFigure();
     }
 
+    private void createCenter(Group root, int centerPosX, int centerPosY) {
+        center =new Circle(centerPosX,centerPosY,3);
+        root.getChildren().addAll(center);
+    }
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void buildRose(){
-        initStartPos((int)window.getWidth()/2+POSX,(int)window.getHeight()/2+POSY);
         Group root = new Group();
         initStartPos((int)window.getWidth()/2+POSX,(int)window.getHeight()/2+POSY);
         buildCoordinates(root,figurePosX, figurePosY);
         rose=createRose(root,figurePosX,figurePosY);
         createCenter(root, centerRoseX, centerRoseY);
         rebuildRose(root);
-
+        clickOnRose();
     }
 
 
     private Rose createRose(Group root,int figurePosX, int figurePosY) {
         rose=new Rose(root,figurePosX, figurePosY);
-        rose.a=Integer.parseInt(paramA.getText());
-        rose.k=Double.parseDouble(paramK.getText());
-        rose.function=trigFunction.getText();
+        rose.setA(Integer.parseInt(paramA.getText()));
+        rose.setK(Double.parseDouble(paramK.getText()));
+        rose.setFunction(trigFunction.getText());
         return rose;
     }
 
@@ -272,33 +256,19 @@ public class Controller {
         rose.drawFigure();
     }
 
-
     public void shiftRose(){
-        Group root = preparePane();
-
-        shiftPosX+=Integer.parseInt(shiftX1.getText());
-        shiftPosY+=Integer.parseInt(shiftY1.getText());
-
-        rose.setGroup(root);
-        rose.shiftFigure(Integer.parseInt(shiftX1.getText()),Integer.parseInt(shiftY1.getText()));
-        rose.drawFigure();
-        createCenter(root, centerRoseX,centerRoseY);
+        shifting(rose,shiftX1.getText(),shiftY1.getText(),centerRoseX,centerRoseY);
     }
 
     public void turnRose(){
-        Group root = preparePane();
-
-        rose.setGroup(root);
-        rose.turnFigure(Double.parseDouble(angleTurning1.getText()));
-        rose.drawFigure();
-        createCenter(root, centerRoseX, centerRoseY);
+       turning(rose,angleTurning1.getText(),centerRoseX,centerRoseY);
     }
 
     public void roseNewCenter(){
         Group root=preparePane();
 
-        centerRoseX+=Integer.parseInt(newPosX.getText());
-        centerRoseY+=Integer.parseInt(newPosY.getText());
+        centerRoseX+=Integer.parseInt(newPosX1.getText());
+        centerRoseY+=Integer.parseInt(newPosY1.getText());
         createCenter(root, centerRoseX, centerRoseY);
         rose = createRose(root,centerRoseX, centerRoseY);
 
@@ -306,4 +276,41 @@ public class Controller {
         rose.shiftFigure(coordinatesPosX-centerRoseX+shiftPosX,coordinatesPosY-centerRoseY+shiftPosY);
         rose.drawFigure();
     }
+
+    public void clickOnRose(){
+        pane.setOnMouseClicked(mouseHandler);
+    }
+
+//    public void mouseClick(){
+//        System.out.println(message);
+//        pane.setOnMouseClicked(mouseHandler);
+//
+//    }
+
+    String message="";
+    private final EventHandler<MouseEvent> mouseHandler = event -> {
+        int pointPosX=(int)window.getWidth()/2+POSX;
+        int pointPosY=(int)window.getHeight()/2+POSY;
+        if(rose.isPointOnRose(event.getX()-pointPosX,event.getY()-pointPosY)){
+
+        }
+
+        String msg="(x: "       + (event.getX()-pointPosX)      + ", y: "       + (event.getY()-pointPosY)      + ") -- " +
+                "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
+                "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
+
+
+        message=msg;
+        //System.out.println(msg);
+    };
+
+//    private final EventHandler<MouseEvent> mouseHandler = event -> {
+//
+//        String msg="(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
+//                "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
+//                "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
+//
+//        message=msg;
+//        mouseClick();
+//    };
 }

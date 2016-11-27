@@ -1,8 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<GridPane fx:controller="sample.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sample.Controller">
     <children>
         <AnchorPane fx:id="window" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
             <children>
@@ -48,7 +52,7 @@
                                                                         <Label layoutX="68.0" layoutY="61.0" text="y shift" />
                                                                         <Button layoutX="123.0" layoutY="43.0" mnemonicParsing="false" onAction="#shift" text="shift" />
                                                                         <TextField fx:id="angleTurning" layoutX="20.0" layoutY="124.0" prefHeight="27.0" prefWidth="55.0" text="90" />
-                                                                        <Button layoutX="120.0" layoutY="124.0" mnemonicParsing="false" onAction="#turning" text="turning" />
+                                                                        <Button layoutX="120.0" layoutY="124.0" mnemonicParsing="false" onAction="#turn" text="turn" />
                                                                         <Label layoutX="75.0" layoutY="115.0" text="°" />
                                                                         <TextField fx:id="newPosX" layoutX="219.0" layoutY="21.0" prefHeight="27.0" prefWidth="38.0" text="5" />
                                                                         <TextField fx:id="newPosY" layoutX="219.0" layoutY="57.0" prefHeight="27.0" prefWidth="38.0" text="5" />
@@ -147,7 +151,7 @@
                                                                         <Label layoutX="68.0" layoutY="61.0" text="y shift" />
                                                                         <Button layoutX="123.0" layoutY="43.0" mnemonicParsing="false" onAction="#shiftRose" text="shift" />
                                                                         <TextField fx:id="angleTurning1" layoutX="20.0" layoutY="124.0" prefHeight="27.0" prefWidth="55.0" text="90" />
-                                                                        <Button layoutX="120.0" layoutY="124.0" mnemonicParsing="false" onAction="#turnRose" text="turning" />
+                                                                        <Button layoutX="120.0" layoutY="124.0" mnemonicParsing="false" onAction="#turnRose" text="turn" />
                                                                         <Label layoutX="75.0" layoutY="115.0" text="°" />
                                                                         <TextField fx:id="newPosX1" layoutX="219.0" layoutY="21.0" prefHeight="27.0" prefWidth="38.0" text="5" />
                                                                         <TextField fx:id="newPosY1" layoutX="219.0" layoutY="57.0" prefHeight="27.0" prefWidth="38.0" text="5" />
