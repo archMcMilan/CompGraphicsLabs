@@ -59,3 +59,9 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+.gitignore
+.idea/
+Comp Graphics.iml
+Would skip repository Laba0/
+out/
+src/
