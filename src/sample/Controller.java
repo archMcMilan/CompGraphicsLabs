@@ -97,7 +97,8 @@ public class Controller {
     private TextField newPosY1;
     private int centerRoseX =0;
     private int centerRoseY =0;
-
+    @FXML
+    private TextField length;
 
     public void init(){
         initStartPos((int)window.getWidth()/2+POSX,(int)window.getHeight()/2+POSY);
@@ -239,6 +240,7 @@ public class Controller {
         createCenter(root, centerRoseX, centerRoseY);
         rebuildRose(root);
         clickOnRose();
+        length.setText(String.valueOf(rose.getSize()));
     }
 
 
@@ -264,6 +266,10 @@ public class Controller {
        turning(rose,angleTurning1.getText(),centerRoseX,centerRoseY);
     }
 
+    public void tangent(){
+        rose.tangent(new Point(0.0,0.0));
+    }
+
     public void roseNewCenter(){
         Group root=preparePane();
 
@@ -281,19 +287,21 @@ public class Controller {
         pane.setOnMouseClicked(mouseHandler);
     }
 
-//    public void mouseClick(){
-//        System.out.println(message);
-//        pane.setOnMouseClicked(mouseHandler);
-//
-//    }
 
     String message="";
     private final EventHandler<MouseEvent> mouseHandler = event -> {
         int pointPosX=(int)window.getWidth()/2+POSX;
         int pointPosY=(int)window.getHeight()/2+POSY;
-        if(rose.isPointOnRose(event.getX()-pointPosX,event.getY()-pointPosY)){
-
+        //System.out.println(pointPosX+" "+pointPosY+" L");
+        //System.out.println(shiftPosX+" "+shiftPosY);
+        Point clickedPoint=rose.pointOnRose(event.getX()-pointPosX,event.getY()-pointPosY);
+        if(clickedPoint!=null){
+            pane.getChildren().clear();
+            rose.group.getChildren().addAll(new Circle(pointPosX+clickedPoint.x,pointPosY+clickedPoint.y,5));
+            pane.getChildren().add(rose.group);
+            rose.drawTangent(clickedPoint);
         }
+
 
         String msg="(x: "       + (event.getX()-pointPosX)      + ", y: "       + (event.getY()-pointPosY)      + ") -- " +
                 "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
@@ -301,16 +309,7 @@ public class Controller {
 
 
         message=msg;
-        //System.out.println(msg);
+        System.out.println(msg);
     };
 
-//    private final EventHandler<MouseEvent> mouseHandler = event -> {
-//
-//        String msg="(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
-//                "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
-//                "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
-//
-//        message=msg;
-//        mouseClick();
-//    };
 }

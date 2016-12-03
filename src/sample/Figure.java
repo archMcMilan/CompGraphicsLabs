@@ -75,7 +75,7 @@ public class Figure{
 
         circlePoints.add(new Point(0.3*a,3*b));
         for(int i=START_CIRCLE;i<END_CIRCLE;i++){
-            circlePoints.add(new Point(Math.cos(3.14/360*i)*a/2, 2*b+Math.sin(3.14/360*i)*a/2));
+            circlePoints.add(new Point(Math.cos(Math.PI/360*i)*a/2, 2*b+Math.sin(Math.PI/360*i)*a/2));
         }
     }
 
