@@ -1,5 +1,9 @@
 package sample;
 
+import figure.Coordinates;
+import figure.Figure;
+import figure.Point;
+import figure.Rose;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -297,8 +301,8 @@ public class Controller {
         Point clickedPoint=rose.pointOnRose(event.getX()-pointPosX,event.getY()-pointPosY);
         if(clickedPoint!=null){
             pane.getChildren().clear();
-            rose.group.getChildren().addAll(new Circle(pointPosX+clickedPoint.x,pointPosY+clickedPoint.y,5));
-            pane.getChildren().add(rose.group);
+            rose.getGroup().getChildren().addAll(new Circle(pointPosX+clickedPoint.getX(),pointPosY+clickedPoint.getY(),5));
+            pane.getChildren().add(rose.getGroup());
             rose.drawTangent(clickedPoint);
         }
 

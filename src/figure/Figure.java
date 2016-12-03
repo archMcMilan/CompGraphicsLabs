@@ -1,4 +1,4 @@
-package sample;
+package figure;
 
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
@@ -48,6 +48,10 @@ public class Figure{
 
     public void setPosY(int posY) {
         this.posY += posY;
+    }
+
+    public Group getGroup() {
+        return group;
     }
 
     public void buildFigure(){

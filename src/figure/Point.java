@@ -1,4 +1,4 @@
-package sample;
+package figure;
 
 /**
  * Created by Artem on 06.11.16.
@@ -10,6 +10,14 @@ public class Point{
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 
     public void turning(double angle){

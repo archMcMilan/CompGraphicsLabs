@@ -1,4 +1,4 @@
-package sample;
+package figure;
 
 import javafx.scene.Group;
 import javafx.scene.shape.Circle;
@@ -32,6 +32,7 @@ public class Rose extends Figure {
     public void setGroup(Group group) {
         super.group = group;
     }
+
 
     public double getSize() {
         return size;
