@@ -1,4 +1,4 @@
-package figure;
+package figures;
 
 /**
  * Created by Artem on 06.11.16.
@@ -18,6 +18,14 @@ public class Point{
 
     public double getY() {
         return y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 
     public void turning(double angle){

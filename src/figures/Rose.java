@@ -1,4 +1,4 @@
-package figure;
+package figures;
 
 import javafx.scene.Group;
 import javafx.scene.shape.Circle;
@@ -90,27 +90,10 @@ public class Rose extends Figure {
         return null;
     }
 
-        public double tangent(Point point) {
-        if (functionFlag == 1) {
-            System.out.println(point.x+" "+point.y);
-
-            double yTangentInPoint=a*k*Math.cos(Math.PI / 180 * point.x * k);//y'(point.x);
-            //System.out.println(Math.cos(Math.PI / 180 * point.x * k));
-            //System.out.println(yTangentInPoint);
-
-            double cosPhi = Math.cos(3.14 / 360 * (point.x+1));
-            double sinPhi = Math.sin(3.14 / 360 * (point.x+1));
-            System.out.println("cos and sin="+cosPhi+" "+sinPhi);
-            Point tempPoint=new Point((a * function((int) (point.x+1))) * cosPhi,
-                    (a * function((int) (point.x+1))) * sinPhi);
-            System.out.println("new x and y="+tempPoint.x+" "+tempPoint.y+" "+(a * function((int) (point.x+1)))+" "+
-                    (a * function((int) (point.x+1))));
-            //group.getChildren().addAll(new Line(0,-10569,270, 376));
-            //group.getChildren().addAll(new Line(point.x+250,point.y+346,point.x+250.5,346+point.y+yTangentInPoint*0.5));
-            //group.getChildren().addAll(new Line(point.x+250,point.y+346,tempPoint.x+250,tempPoint.y+346));
-        }
+    public double tangent(Point point) {
         return 0.0;
     }
+
     public void drawTangent(Point point) {
         if (functionFlag == 1) {
             System.out.println(point.x + " " + point.y);

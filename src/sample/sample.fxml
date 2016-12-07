@@ -6,21 +6,21 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <children>
-        <AnchorPane fx:id="window" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+        <AnchorPane fx:id="window" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
             <children>
-                <SplitPane dividerPositions="0.4222222222222222" prefHeight="593.0" prefWidth="900.0">
+                <SplitPane dividerPositions="0.5375626043405676" prefHeight="850.0" prefWidth="1200.0">
                     <items>
-                        <TabPane>
+                        <TabPane maxWidth="400.0" prefHeight="848.0" prefWidth="400.0">
                             <tabs>
                                 <Tab text="Лаба0-1">
                                     <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="591.0" prefWidth="338.0">
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="648.0" prefWidth="266.0">
                                             <children>
-                                                <ImageView fitHeight="402.0" fitWidth="375.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="431.0" fitWidth="372.0" layoutY="355.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
-                                                        <!--<Image url="/Users/Artem/Downloads/figure.jpg" />-->
+                                                        <!--<Image url="/Users/Artem/Downloads/figures.jpg" />-->
                                                     </image>
                                                 </ImageView>
                                                 <TabPane layoutY="-2.0" prefHeight="199.0" prefWidth="375.0" tabClosingPolicy="UNAVAILABLE">
@@ -122,7 +122,7 @@
                                 </Tab>
                                 <Tab text="Лаба2">
                                     <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                        <AnchorPane maxWidth="300.0" minHeight="0.0" minWidth="0.0" prefHeight="815.0" prefWidth="300.0">
                                             <children>
                                                 <TabPane layoutX="2.0" prefHeight="559.0" prefWidth="375.0" tabClosingPolicy="UNAVAILABLE">
                                                     <tabs>
@@ -173,9 +173,18 @@
                                         </AnchorPane>
                                     </content>
                                 </Tab>
+                        <Tab text="Лаба3">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <Button fx:id="wolfBuild" layoutX="27.0" layoutY="22.0" mnemonicParsing="false" onAction="#wolfBuild" text="Build" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </Tab>
                             </tabs>
                         </TabPane>
-                        <AnchorPane fx:id="pane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="591.0" prefWidth="549.0" />
+                        <AnchorPane fx:id="pane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="850.0" prefWidth="900.0" />
                     </items>
                 </SplitPane>
             </children>

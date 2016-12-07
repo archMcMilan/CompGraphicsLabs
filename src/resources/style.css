@@ -1,0 +1,7 @@
+#pane{
+    -fx-background-image: url("background_image.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 700 650;
+    -fx-background-position: center center;
+    -fx-opacity: 0.4;
+}
