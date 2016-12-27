@@ -1,9 +1,13 @@
 package controller;
 
 import figures.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -104,8 +108,16 @@ public class Controller {
     private int wolfPosX = 0;
     private int wolfPosY = 0;
     private Wolf wolf;
-    private Point clickedPoint=null;
-
+    @FXML
+    private Slider slider;
+    private boolean smooth=false;
+    @FXML
+    private Label smoothText;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @FXML
+    private TextField iteration;
+    @FXML
+    private TextField lengthKoha;
 
     public void init() {
         initStartPos((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
@@ -244,7 +256,8 @@ public class Controller {
     }
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //ROSE//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public void buildRose() {
         Group root = new Group();
         initStartPos((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
@@ -277,10 +290,6 @@ public class Controller {
 
     public void turnRose() {
         turning(rose, angleTurning1.getText(), centerRoseX, centerRoseY);
-    }
-
-    public void tangent() {
-        rose.tangent(new Point(0.0, 0.0));
     }
 
     public void roseNewCenter() {
@@ -319,67 +328,79 @@ public class Controller {
         System.out.println(msg);
     };
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //WOLF//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public void wolfBuild() {
         Group root = new Group();
         initStartPos((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
         buildCoordinates(root, wolfPosX, wolfPosY);
         wolf = new Wolf(root, wolfPosX, wolfPosY);
-        //pane.getStylesheets().addAll(this.getClass().getResource("../resources/style.css").toExternalForm());
-        //clickOnWolf();
+        smooth=false;
+        smoothText.setText(String.valueOf(smooth));
         wolf.buildWolf();
         rebuiltPane(root);
-        System.out.println("draw");
+
+        //pane.getStylesheets().addAll(this.getClass().getResource("../resources/style.css").toExternalForm());
+
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 int pointPosX=(int)window.getWidth()/2+POSX;
                 int pointPosY=(int)window.getHeight()/2+POSY;
-                if(clickedPoint==null){
-                    clickedPoint=wolf.pointOnWolf(event.getX()-pointPosX,event.getY()-pointPosY);
-                    if(clickedPoint!=null){
-                        System.out.println("CLICKED before="+clickedPoint.getX()+" "+clickedPoint.getY());
-                        clickedPoint.setX(event.getX()-pointPosX);
-                        clickedPoint.setY(event.getY()-pointPosY);
-                        System.out.println("CLICKED after="+clickedPoint.getX()+" "+clickedPoint.getY());
-                        wolf.drawWolf();
-                        rebuiltPane(root);
-                        System.out.println("push point");
-                    }
-
-
-                    String msg="(x: "       + (event.getX()-pointPosX)      + ", y: "       + (event.getY()-pointPosY)      + ") -- " +
-                            "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
-                            "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
-
-                    System.out.println(msg);
+                if(wolf.getClickedPoint()!=null || wolf.getClickedAdditionalPoint()!=null){
+                    shiftPoint(event, pointPosX, pointPosY);
                 }else {
-
+                    wolf.pointOnWolf(event.getX()-pointPosX,event.getY()-pointPosY);
+                    wolf.additionalPointOnWolf(event.getX()-pointPosX,event.getY()-pointPosY);
                 }
             }
         });
-//        pane.setOnMouseDragExited(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                int pointPosX=(int)window.getWidth()/2+POSX;
-//                int pointPosY=(int)window.getHeight()/2+POSY;
-//                Point clickedPoint=wolf.pointOnWolf(event.getX()-pointPosX,event.getY()-pointPosY);
-//                if(clickedPoint!=null){
-//                    clickedPoint.setX(event.getX()-pointPosX);
-//                    clickedPoint.setY(event.getY()-pointPosY);
-//                    wolf.drawWolf();
-//                    rebuiltPane(root);
-//                    System.out.println("push point");
-//                }
-//
-//
-//                String msg="(x: "       + (event.getX()-pointPosX)      + ", y: "       + (event.getY()-pointPosY)      + ") -- " +
-//                        "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
-//                        "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
-//
-//                System.out.println(msg);
-//            }
-//        });
+
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                turningIntoNewProcess(newValue.doubleValue()/100);
+            }
+        });
+    }
+
+    private void shiftPoint(MouseEvent event, int pointPosX, int pointPosY) {
+        wolf.changePoint(event.getX()-pointPosX,event.getY()-pointPosY);
+        Group root = new Group();
+        buildCoordinates(root, wolfPosX, wolfPosY);
+        wolf.setGroup(root);
+        wolf.drawWolf();
+        rebuiltPane(root);
+        wolf.setClickedPoint(null);
+        wolf.setClickedAdditionalPoint(null);
+    }
+
+
+    private void turningIntoNewProcess(double coef){
+
+        Group root = new Group();
+        buildCoordinates(root, wolfPosX, wolfPosY);
+        wolf.setGroup(root);
+        wolf.turnIntoNew(coef);
+        rebuiltPane(root);
+    }
+
+    public boolean smooth(){
+        smooth=(!smooth);
+        wolf.setSmooth(smooth);
+        smoothText.setText(String.valueOf(smooth));
+        return smooth;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void buildFractal(){
+        Group root = new Group();
+        initStartPos((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
+        buildCoordinates(root, figurePosX, figurePosY);
+        Fractal fractal=new Fractal(root,figurePosX, figurePosY);
+        fractal.setStartValues(Integer.parseInt(lengthKoha.getText()));
+        fractal.buildFractal(Integer.parseInt(iteration.getText()));
+        rebuiltPane(root);
     }
 
 }

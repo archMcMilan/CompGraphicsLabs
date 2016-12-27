@@ -1,29 +1,55 @@
 package figures;
 
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Artem on 03.12.16.
- */
+
 public class Wolf{
     private int posX;
     private int posY;
     private Group group;
     private List<Point> points;
     private List<Point> additionalPoints;
+    private Point clickedPoint=null;
+    private Point clickedAdditionalPoint=null;
+    private boolean smooth=false;
 
+    public Point getClickedPoint() {
+        return clickedPoint;
+    }
 
-    public Wolf(Group group,int posX, int posY) {
+    public Point getClickedAdditionalPoint() {
+        return clickedAdditionalPoint;
+    }
+
+    public void setClickedPoint(Point clickedPoint) {
+        this.clickedPoint = clickedPoint;
+    }
+
+    public void setClickedAdditionalPoint(Point clickedAdditionalPoint) {
+        this.clickedAdditionalPoint = clickedAdditionalPoint;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public void setSmooth(boolean smooth) {
+        this.smooth = smooth;
+    }
+
+    public Wolf(Group group, int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
         this.group = group;
-        points=new ArrayList<>();
-        additionalPoints=new ArrayList<>();
+        points=new LinkedList<>();
+        additionalPoints=new LinkedList<>();
     }
 
     public void addPoints(){
@@ -36,7 +62,7 @@ public class Wolf{
         points.add(new Point(-272,-232));
         points.add(new Point(-206,-309));
         points.add(new Point(-147,-332));
-        points.add(new Point(-26,-329));
+        points.add(new Point(-82,-332));
         points.add(new Point(-6,-324));
         points.add(new Point(60,-365));
         points.add(new Point(68,-350));
@@ -187,8 +213,8 @@ public class Wolf{
         additionalPoints.add(new Point(-32,-54));
         additionalPoints.add(new Point(-29,-66));
 
-        additionalPoints.add(new Point(-89,-87));
         additionalPoints.add(new Point(-59,-76));
+        additionalPoints.add(new Point(-89,-87));
 
         additionalPoints.add(new Point(-189,-22));
         additionalPoints.add(new Point(-142,43));
@@ -235,15 +261,8 @@ public class Wolf{
     public void drawWolf() {
         List<Line> lines=new ArrayList<>();
         List<Point> pointsOnLine=new ArrayList<>();
-        for(int i=1,j=1;i<points.size() && j<additionalPoints.size();i++,j+=2){
-            for(double t=0;t<=1;t+=0.01){
-                pointsOnLine.add(new Point(
-                        formulaX(t,points.get(i-1),points.get(i),additionalPoints.get(j-1),additionalPoints.get(j)),
-                        formulaY(t,points.get(i-1),points.get(i),additionalPoints.get(j-1),additionalPoints.get(j))));
-            }
-        }
+        drawLine(pointsOnLine);
 
-        List<Circle> circles=new ArrayList<>();
         for(int i=1;i<pointsOnLine.size();i++){
             lines.add(new Line(
                     pointsOnLine.get(i).x+posX,
@@ -251,6 +270,7 @@ public class Wolf{
                     pointsOnLine.get(i-1).x+posX,
                     pointsOnLine.get(i-1).y+posY));
         }
+        List<Circle> circles=new ArrayList<>();
         for(int i=0;i<points.size();i++){
             circles.add(new Circle(points.get(i).x+posX,points.get(i).y+posY,5));
 
@@ -262,11 +282,32 @@ public class Wolf{
         group.getChildren().addAll(lines);
     }
 
-    public double formulaX(double t, Point start, Point finish ,Point addFirst, Point addSecond){
+    private void drawLine(List<Point> pointsOnLine){
+        for(int i=1,j=1;i<points.size() && j<additionalPoints.size();i++,j+=2){
+            for(double t=0;t<=1;t+=0.01){
+                pointsOnLine.add(new Point(
+                        formulaX(t,points.get(i-1),points.get(i),additionalPoints.get(j-1),additionalPoints.get(j)),
+                        formulaY(t,points.get(i-1),points.get(i),additionalPoints.get(j-1),additionalPoints.get(j))));
+            }
+        }
+    }
+
+    private void comleteInOneDraw(List<Point> pointsOnLine, List<Line> lines){
+        for(int i=1;i<pointsOnLine.size();i++){
+            lines.add(new Line(
+                    pointsOnLine.get(i).x+posX,
+                    pointsOnLine.get(i).y+posY,
+                    pointsOnLine.get(i-1).x+posX,
+                    pointsOnLine.get(i-1).y+posY));
+        }
+    }
+
+
+    private double formulaX(double t, Point start, Point finish ,Point addFirst, Point addSecond){
         return Math.pow(1-t,3)*start.getX()+3*t*Math.pow(1-t,2)*addFirst.getX()+3*t*t*(1-t)*addSecond.getX()+t*t*t*finish.getX();
     }
 
-    public double formulaY(double t, Point start, Point finish ,Point addFirst, Point addSecond){
+    private double formulaY(double t, Point start, Point finish ,Point addFirst, Point addSecond){
         return Math.pow(1-t,3)*start.getY()+3*t*Math.pow(1-t,2)*addFirst.getY()+3*t*t*(1-t)*addSecond.getY()+t*t*t*finish.getY();
     }
 
@@ -274,10 +315,368 @@ public class Wolf{
         for (Point point : points) {
             if (point.x - 5 <= x && point.x + 5 >= x) {
                 if (point.y - 5 <= y && point.y + 5 >= y) {
+                    clickedPoint=point;
+                    System.out.println(clickedPoint.getX()+" "+clickedPoint.getY());
+                    Circle circle=new Circle(point.x+posX,point.y+posY,5);
+                    circle.setFill(Color.BLUE);
+                    group.getChildren().addAll(circle);
                     return point;
                 }
             }
         }
         return null;
     }
+
+    public Point additionalPointOnWolf(double x, double y) {
+        for (Point point : additionalPoints) {
+            if (point.x - 5 <= x && point.x + 5 >= x) {
+                if (point.y - 5 <= y && point.y + 5 >= y) {
+                    clickedAdditionalPoint=point;
+                    Circle circle=new Circle(point.x+posX,point.y+posY,2);
+                    circle.setFill(Color.BLUE);
+                    group.getChildren().addAll(circle);
+                    return point;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void changePoint(double x, double y){
+        if(clickedPoint!=null){
+            clickedPoint.setX(x);
+            clickedPoint.setY(y);
+            if(smooth){
+                applySmooth(additionalPoints.get((points.indexOf(clickedPoint)-1)*2+1),
+                        additionalPoints.get((points.indexOf(clickedPoint))*2),
+                        points.get(points.indexOf(clickedPoint)));
+            }
+        }else if(clickedAdditionalPoint!=null){
+            clickedAdditionalPoint.setX(x);
+            clickedAdditionalPoint.setY(y);
+
+            System.out.println(additionalPoints.indexOf(clickedAdditionalPoint));
+            System.out.println(additionalPoints.get(additionalPoints.indexOf(clickedAdditionalPoint)).getX()+" "+
+                    additionalPoints.get(additionalPoints.indexOf(clickedAdditionalPoint)).getY());
+            System.out.println(points.get(additionalPoints.indexOf(clickedAdditionalPoint)/2).getX()+" "+
+                    points.get(additionalPoints.indexOf(clickedAdditionalPoint)/2).getY());
+
+            if(smooth){
+                if(additionalPoints.indexOf(clickedAdditionalPoint)%2==0){
+                    applySmooth(additionalPoints.get(additionalPoints.indexOf(clickedAdditionalPoint)),
+                            additionalPoints.get(additionalPoints.indexOf(clickedAdditionalPoint)-1),
+                            points.get(additionalPoints.indexOf(clickedAdditionalPoint)/2));
+                }else{
+                    applySmooth(additionalPoints.get(additionalPoints.indexOf(clickedAdditionalPoint)),
+                            additionalPoints.get(additionalPoints.indexOf(clickedAdditionalPoint)+1),
+                            points.get(additionalPoints.indexOf(clickedAdditionalPoint)/2+1));
+                }
+
+            }
+        }
+
+    }
+
+    public void newFigure(){
+        List<Point>newFigurePoints=pointOfNewFigure();
+        List<Point>newAdditionalPoints=addPointsOfNEwFigure();
+
+        List<Point> pointsOnLine=new ArrayList<>();
+        List<Line> lines=new ArrayList<>();
+
+        for(int i=1,j=1;i<newFigurePoints.size() && j<newAdditionalPoints.size();i++,j+=2){
+            for(double t=0;t<=1;t+=0.01){
+                pointsOnLine.add(new Point(
+                        formulaX(t,newFigurePoints.get(i-1),newFigurePoints.get(i),newAdditionalPoints.get(j-1),newAdditionalPoints.get(j)),
+                        formulaY(t,newFigurePoints.get(i-1),newFigurePoints.get(i),newAdditionalPoints.get(j-1),newAdditionalPoints.get(j))));
+            }
+        }
+        for(int i=1;i<pointsOnLine.size();i++){
+            lines.add(new Line(
+                    pointsOnLine.get(i).x+posX,
+                    pointsOnLine.get(i).y+posY,
+                    pointsOnLine.get(i-1).x+posX,
+                    pointsOnLine.get(i-1).y+posY));
+        }
+        group.getChildren().addAll(lines);
+    }
+
+    public List<Point> pointOfNewFigure(){
+        List<Point> newFigurePoints=new ArrayList<>();
+        newFigurePoints.add(new Point(-100,0));
+        newFigurePoints.add(new Point(-105,-5));
+        newFigurePoints.add(new Point(-110,-10));
+        newFigurePoints.add(new Point(-115,-15));
+        newFigurePoints.add(new Point(-120,-20));
+
+        newFigurePoints.add(new Point(-120,-30));
+        newFigurePoints.add(new Point(-120,-40));
+        newFigurePoints.add(new Point(-110,-40));
+        newFigurePoints.add(new Point(-100,-40));
+
+        newFigurePoints.add(new Point(-100,-60));
+        newFigurePoints.add(new Point(-100,-80));
+        newFigurePoints.add(new Point(-100,-100));
+        newFigurePoints.add(new Point(-100,-120));
+        newFigurePoints.add(new Point(-100,-140));
+        newFigurePoints.add(new Point(-100,-150));
+
+        newFigurePoints.add(new Point(-110,-150));
+        newFigurePoints.add(new Point(-120,-150));
+        newFigurePoints.add(new Point(-120,-160));
+        newFigurePoints.add(new Point(-120,-170));
+
+        newFigurePoints.add(new Point(-115,-175));
+        newFigurePoints.add(new Point(-110,-180));
+        newFigurePoints.add(new Point(-105,-185));
+        newFigurePoints.add(new Point(-100,-190));
+
+        newFigurePoints.add(new Point(0,-190));
+
+        newFigurePoints.add(new Point(100,-190));
+        newFigurePoints.add(new Point(105,-185));
+        newFigurePoints.add(new Point(110,-180));
+        newFigurePoints.add(new Point(115,-175));
+
+        newFigurePoints.add(new Point(120,-170));
+        newFigurePoints.add(new Point(120,-160));
+        newFigurePoints.add(new Point(120,-150));
+        newFigurePoints.add(new Point(110,-150));
+
+        newFigurePoints.add(new Point(100,-150));
+        newFigurePoints.add(new Point(100,-140));
+        newFigurePoints.add(new Point(100,-120));
+        newFigurePoints.add(new Point(100,-100));
+        newFigurePoints.add(new Point(100,-80));
+        newFigurePoints.add(new Point(100,-60));
+
+        newFigurePoints.add(new Point(100,-40));
+        newFigurePoints.add(new Point(110,-40));
+        newFigurePoints.add(new Point(120,-40));
+        newFigurePoints.add(new Point(120,-30));
+
+        newFigurePoints.add(new Point(120,-20));
+        newFigurePoints.add(new Point(115,-15));
+        newFigurePoints.add(new Point(110,-10));
+        newFigurePoints.add(new Point(105,-5));
+
+        newFigurePoints.add(new Point(100,0));
+        newFigurePoints.add(new Point(0,0));
+        newFigurePoints.add(new Point(-100,0));
+
+        return newFigurePoints;
+    }
+
+    public List<Point> addPointsOfNEwFigure(){
+        List<Point> additionalPoints=new ArrayList<>();
+        additionalPoints.add(new Point(-102,-2));
+        additionalPoints.add(new Point(-104,-4));
+
+        additionalPoints.add(new Point(-106,-6));
+        additionalPoints.add(new Point(-108,-8));
+
+        additionalPoints.add(new Point(-112,-12));
+        additionalPoints.add(new Point(-114,-14));
+
+        additionalPoints.add(new Point(-116,-16));
+        additionalPoints.add(new Point(-118,-18));
+
+
+        additionalPoints.add(new Point(-120,-23));
+        additionalPoints.add(new Point(-120,-26));
+
+        additionalPoints.add(new Point(-120,-33));
+        additionalPoints.add(new Point(-120,-36));
+
+        additionalPoints.add(new Point(-116,-40));
+        additionalPoints.add(new Point(-113,-40));
+
+        additionalPoints.add(new Point(-107,-40));
+        additionalPoints.add(new Point(-103,-40));
+
+
+        additionalPoints.add(new Point(-100,-47));
+        additionalPoints.add(new Point(-100,-54));
+
+        additionalPoints.add(new Point(-100,-67));
+        additionalPoints.add(new Point(-100,-74));
+
+        additionalPoints.add(new Point(-100,-87));
+        additionalPoints.add(new Point(-100,-94));
+
+        additionalPoints.add(new Point(-100,-107));
+        additionalPoints.add(new Point(-100,-114));
+
+        additionalPoints.add(new Point(-100,-127));
+        additionalPoints.add(new Point(-100,-134));
+
+        additionalPoints.add(new Point(-100,-143));
+        additionalPoints.add(new Point(-100,-146));
+
+
+        additionalPoints.add(new Point(-103,-150));
+        additionalPoints.add(new Point(-106,-150));
+
+        additionalPoints.add(new Point(-113,-150));
+        additionalPoints.add(new Point(-116,-150));
+
+        additionalPoints.add(new Point(-120,-153));
+        additionalPoints.add(new Point(-120,-156));
+
+        additionalPoints.add(new Point(-120,-163));
+        additionalPoints.add(new Point(-120,-166));
+
+
+        additionalPoints.add(new Point(-118,-172));
+        additionalPoints.add(new Point(-116,-173));
+
+        additionalPoints.add(new Point(-113,-177));
+        additionalPoints.add(new Point(-112,-178));
+
+        additionalPoints.add(new Point(-108,-182));
+        additionalPoints.add(new Point(-107,-183));
+
+        additionalPoints.add(new Point(-103,-187));
+        additionalPoints.add(new Point(-102,-188));
+
+
+
+        additionalPoints.add(new Point(-75,-190));
+        additionalPoints.add(new Point(-25,-190));
+
+
+
+        additionalPoints.add(new Point(25,-190));
+        additionalPoints.add(new Point(75,-190));
+
+        additionalPoints.add(new Point(102,-188));
+        additionalPoints.add(new Point(103,-187));
+
+        additionalPoints.add(new Point(107,-183));
+        additionalPoints.add(new Point(108,-182));
+
+        additionalPoints.add(new Point(112,-178));
+        additionalPoints.add(new Point(113,-177));
+
+
+        additionalPoints.add(new Point(117,-173));
+        additionalPoints.add(new Point(118,-172));
+
+        additionalPoints.add(new Point(120,-167));
+        additionalPoints.add(new Point(120,-163));
+
+        additionalPoints.add(new Point(120,-157));
+        additionalPoints.add(new Point(120,-153));
+
+        additionalPoints.add(new Point(117,-150));
+        additionalPoints.add(new Point(113,-150));
+
+
+        additionalPoints.add(new Point(107,-150));
+        additionalPoints.add(new Point(103,-150));
+
+        additionalPoints.add(new Point(100,-147));
+        additionalPoints.add(new Point(100,-143));
+
+        additionalPoints.add(new Point(100,-133));
+        additionalPoints.add(new Point(100,-127));
+
+        additionalPoints.add(new Point(100,-113));
+        additionalPoints.add(new Point(100,-107));
+
+
+        additionalPoints.add(new Point(100,-93));
+        additionalPoints.add(new Point(100,-87));
+
+        additionalPoints.add(new Point(100,-73));
+        additionalPoints.add(new Point(100,-67));
+
+
+        additionalPoints.add(new Point(100,-53));
+        additionalPoints.add(new Point(100,-47));
+
+        additionalPoints.add(new Point(103,-40));
+        additionalPoints.add(new Point(107,-40));
+
+        additionalPoints.add(new Point(113,-40));
+        additionalPoints.add(new Point(117,-40));
+
+        additionalPoints.add(new Point(120,-37));
+        additionalPoints.add(new Point(120,-33));
+
+
+        additionalPoints.add(new Point(120,-27));
+        additionalPoints.add(new Point(120,-23));
+
+        additionalPoints.add(new Point(118,-18));
+        additionalPoints.add(new Point(117,-17));
+
+        additionalPoints.add(new Point(113,-13));
+        additionalPoints.add(new Point(112,-12));
+
+        additionalPoints.add(new Point(108,-8));
+        additionalPoints.add(new Point(107,-7));
+
+
+        additionalPoints.add(new Point(104,-4));
+        additionalPoints.add(new Point(103,-3));
+
+        additionalPoints.add(new Point(75,0));
+        additionalPoints.add(new Point(25,0));
+
+        additionalPoints.add(new Point(-25,0));
+        additionalPoints.add(new Point(-75,0));
+
+        return additionalPoints;
+    }
+
+    public Group turnIntoNew(double coef){
+        List<Point>newFigurePoints=pointOfNewFigure();
+        List<Point>newAdditionalPoints=addPointsOfNEwFigure();
+        List<Line> lines=new ArrayList<>();
+        List<Point> pointsOnLine=new ArrayList<>();
+        turnIntoIter(newFigurePoints, newAdditionalPoints, pointsOnLine,coef,points,additionalPoints);
+        for(int i=1;i<pointsOnLine.size();i++){
+            lines.add(new Line(
+                    pointsOnLine.get(i).x+posX,
+                    pointsOnLine.get(i).y+posY,
+                    pointsOnLine.get(i-1).x+posX,
+                    pointsOnLine.get(i-1).y+posY));
+        }
+        group.getChildren().addAll(lines);
+        return group;
+    }
+
+    private void turnIntoIter(List<Point> newFigurePoints, List<Point> newAdditionalPoints,
+                              List<Point> pointsOnLine,double coef,
+                              List<Point> points, List<Point> additionalPoints) {
+        for(int i=1,j=1;i<points.size() && j<additionalPoints.size();i++,j+=2){
+            for(double t=0;t<=1;t+=0.01){
+                Point newStart=new Point(
+                        points.get(i-1).getX()+(newFigurePoints.get(i-1).getX()-points.get(i-1).getX())*coef,
+                        points.get(i-1).getY()+(newFigurePoints.get(i-1).getY()-points.get(i-1).getY())*coef);
+                Point newEnd=new Point(
+                        points.get(i).getX()+(newFigurePoints.get(i).getX()-points.get(i).getX())*coef,
+                        points.get(i).getY()+(newFigurePoints.get(i).getY()-points.get(i).getY())*coef);
+                Point newFirst=new Point(
+                        additionalPoints.get(j-1).getX()+(newAdditionalPoints.get(j-1).getX()-additionalPoints.get(j-1).getX())*coef,
+                        additionalPoints.get(j-1).getY()+(newAdditionalPoints.get(j-1).getY()-additionalPoints.get(j-1).getY())*coef);
+                Point newSecond=new Point(
+                        additionalPoints.get(j).getX()+(newAdditionalPoints.get(j).getX()-additionalPoints.get(j).getX())*coef,
+                        additionalPoints.get(j).getY()+(newAdditionalPoints.get(j).getY()-additionalPoints.get(j).getY())*coef);
+                pointsOnLine.add(new Point(
+                        formulaX(t,newStart,newEnd,newFirst,newSecond),
+                        formulaY(t,newStart,newEnd,newFirst,newSecond)));
+            }
+        }
+    }
+
+    public void applySmooth(Point leftPoint, Point rightPoint, Point middlePoint) {
+        double l1 = 1, l2 = 1;
+        double x = middlePoint.getX() - l1/l2*(leftPoint.getX() - middlePoint.getX());
+        double y = middlePoint.getY() - l1/l2*(leftPoint.getY() - middlePoint.getY());
+        rightPoint.setX(x);
+        rightPoint.setY(y);
+    }
+
 }

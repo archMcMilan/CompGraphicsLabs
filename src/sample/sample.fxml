@@ -173,13 +173,28 @@
                                         </AnchorPane>
                                     </content>
                                 </Tab>
-                        <Tab text="Лаба3">
+                        <Tab text="Лаба3-4">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <Button fx:id="wolfBuild" layoutX="27.0" layoutY="22.0" mnemonicParsing="false" onAction="#wolfBuild" text="Build" />
+                                    <Slider fx:id="slider" layoutX="99.0" layoutY="28.0" prefHeight="16.0" prefWidth="174.0" />
+                                    <Button layoutX="27.0" layoutY="65.0" mnemonicParsing="false" onAction="#smooth" text="smoothing" />
+                                    <Label fx:id="smoothText" layoutX="128.0" layoutY="70.0" text="false" />
                                  </children>
                               </AnchorPane>
+                          </content>
+                        </Tab>
+                        <Tab text="Лаба7">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="iteration" layoutX="130.0" layoutY="40.0" prefHeight="27.0" prefWidth="84.0" text="3" />
+                                    <TextField fx:id="lengthKoha" layoutX="131.0" layoutY="90.0" prefHeight="27.0" prefWidth="83.0" text="700" />
+                                    <Label layoutX="14.0" layoutY="45.0" text="Iteration amount=" />
+                                    <Label layoutX="27.0" layoutY="95.0" text="Side length=" />
+                                    <Button layoutX="246.0" layoutY="62.0" mnemonicParsing="false" onAction="#buildFractal" text="Button" />
+                                 </children></AnchorPane>
                           </content>
                         </Tab>
                             </tabs>
