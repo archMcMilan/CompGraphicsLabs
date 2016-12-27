@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 public class Controller {
     public static final int POSX = -200;
@@ -392,7 +393,7 @@ public class Controller {
         return smooth;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //FRACTAL/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void buildFractal(){
         Group root = new Group();
         initStartPos((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
@@ -402,7 +403,14 @@ public class Controller {
         fractal.buildFractal(Integer.parseInt(iteration.getText()));
         rebuiltPane(root);
     }
-
+    //PROJECTION//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void buildProjection(){
+        Group root = new Group();
+        initStartPos((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
+        root.getChildren().addAll(new Line((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY,0,0));
+        //Controller3D.buildCoordinates(root,(int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
+        rebuiltPane(root);
+    }
 }
 
 
