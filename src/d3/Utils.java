@@ -34,9 +34,9 @@ public class Utils {
     }
 
     public static double[][] rotateMatrixFactory(String axis, double rotateDegree) {
-        System.out.print(rotateDegree+" ");
+        //System.out.print(rotateDegree+" ");
         rotateDegree =Math.toRadians(rotateDegree);
-        System.out.println(rotateDegree);
+        //System.out.println(rotateDegree);
         switch (axis) {
             case "X" : {
                 return new double[][]  {

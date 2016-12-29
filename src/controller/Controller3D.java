@@ -13,22 +13,27 @@ public class Controller3D {
         new Coordinates3D(root,x,y).drawAxis();
     }
 
-    public  void buildFigure(Group top,Group middle,Group bottom, int posX, int posY){
+    public void createFigureObject(Group top,Group middle,Group bottom, int posX, int posY){
         figure3D=new Figure3D(top,middle,bottom,posX,posY);
-        figure3D.initFigure();
-        figure3D.initFigure();
+    }
+
+    public void buildFigure(){
         figure3D.initFigure();
     }
 
-    public  void rotateX(double degree){
+    public void rotateX(double degree){
         figure3D.rotateX(degree);
     }
 
-    public  void rotateY(double degree){
+    public void rotateY(double degree){
         figure3D.rotateY(degree);
     }
 
-    public  void rotateZ(double degree){
+    public void rotateZ(double degree){
         figure3D.rotateZ(degree);
+    }
+
+    public Figure3D getFigure3D() {
+        return figure3D;
     }
 }

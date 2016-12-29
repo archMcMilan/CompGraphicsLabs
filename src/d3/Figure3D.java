@@ -14,60 +14,146 @@ public class Figure3D {
     private int posY;
     private double degreeValue;
     private int flagAxis=0;
+    private List<Point3D> points=new ArrayList<>();
 
 
     public Figure3D(Group top,Group middle,Group bottom, int posX, int posY) {
         this.top = top;
-        this.posX=posX;
-        this.posY=posY;
         this.middle=middle;
         this.bottom=bottom;
+        this.posX=posX;
+        this.posY=posY;
+        initPoints();
+    }
+
+    public void setTop(Group top) {
+        this.top = top;
+    }
+
+    public void setMiddle(Group middle) {
+        this.middle = middle;
+    }
+
+    public void setBottom(Group bottom) {
+        this.bottom = bottom;
+    }
+
+    private void initPoints(){
+        points.add(new Point3D(25, -70, 25));
+        points.add(new Point3D(25, -70, -25));
+        points.add(new Point3D(-25, -70, -25));
+        points.add(new Point3D(-25, -70, 25));
+        points.add(new Point3D(25, -70, 25));
+
+        points.add(new Point3D(25,0,25));
+        points.add(new Point3D(25,0,-25));
+        points.add(new Point3D(-25,0,-25));
+        points.add(new Point3D(-25,0,25));
+        points.add(new Point3D(25,0,25));
+
+        points.add(new Point3D(-25,-70,25));
+        points.add(new Point3D(-25,0,25));
+        points.add(new Point3D(-25,-70,-25));
+        points.add(new Point3D(-25,0,-25));
+        points.add(new Point3D(25,-70,25));
+        points.add(new Point3D(25,0,25));
+        points.add(new Point3D(25,-70,-25));
+        points.add(new Point3D(25,0,-25));
+
+        points.add(new Point3D(35, 0, 35));
+        points.add(new Point3D(45, 0, 0));
+        points.add(new Point3D(35, 0, -35));
+        points.add(new Point3D(0, 0, -45));
+        points.add(new Point3D(-35, 0, -35));
+        points.add(new Point3D(-45, 0, 0));
+        points.add(new Point3D(-35, 0, 35));
+        points.add(new Point3D(0, 0, 45));
+        points.add(new Point3D(35, 0, 35));
+
+        points.add(new Point3D(35, 20, 35));
+        points.add(new Point3D(45, 20, 0));
+        points.add(new Point3D(35, 20, -35));
+        points.add(new Point3D(0, 20, -45));
+        points.add(new Point3D(-35, 20, -35));
+        points.add(new Point3D(-45, 20, 0));
+        points.add(new Point3D(-35, 20, 35));
+        points.add(new Point3D(0, 20, 45));
+        points.add(new Point3D(35, 20, 35));
+
+        points.add(new Point3D(35, 0, 35));
+        points.add(new Point3D(35, 20, 35));
+        points.add(new Point3D(35, 0, -35));
+        points.add(new Point3D(35, 20, -35));
+
+        points.add(new Point3D(-35, 0, -35));
+        points.add(new Point3D(-35, 20, -35));
+        points.add(new Point3D(-35, 0, 35));
+        points.add(new Point3D(-35, 20, 35));
+
+        points.add(new Point3D(45, 0, 0));
+        points.add(new Point3D(45, 20, 0));
+        points.add(new Point3D(0, 0, -45));
+        points.add(new Point3D(0, 20, -45));
+
+        points.add(new Point3D(-45, 0, 0));
+        points.add(new Point3D(-45, 20, 0));
+        points.add(new Point3D(0, 0, 45));
+        points.add(new Point3D(0, 20, 45));
     }
 
     public void initFigure(){
-        part(new Point3D(60, 10, 0), new Point3D(60, 10, -50), new Point3D(10, 10, -50), new Point3D(10, 10, 0),new Point3D(60, 10, 0));
-        part(new Point3D(60,80,0), new Point3D(60,80,-50), new Point3D(10,80,-50), new Point3D(10,80,0),new Point3D(60,80,0));
-        part(new Point3D(10,10,0), new Point3D(10,80,0));
-        part(new Point3D(10,10,-50), new Point3D(10,80,-50));
-        part(new Point3D(60,10,0), new Point3D(60,80,0));
-        part(new Point3D(60,10,-50), new Point3D(60,80,-50));
+        part(0,points.get(0), points.get(1),points.get(2),points.get(3),points.get(4));
+        part(5,points.get(5), points.get(6),points.get(7),points.get(8),points.get(9));
+        part(10,points.get(10), points.get(11));
+        part(12,points.get(12), points.get(13));
+        part(14,points.get(14), points.get(15));
+        part(16,points.get(16), points.get(17));
 
-        part(new Point3D(70, 80, 10),new Point3D(80, 80, -25),  new Point3D(70, 80, -60),new Point3D(35, 80, -70),
-                new Point3D(0, 80, -60),new Point3D(-10, 80, -25), new Point3D(0, 80, 10),new Point3D(35, 80, 20),
-                    new Point3D(70, 80, 10));
-        part(new Point3D(70, 100, 10),new Point3D(80, 100, -25),  new Point3D(70, 100, -60),new Point3D(35, 100, -70),
-                new Point3D(0, 100, -60),new Point3D(-10, 100, -25), new Point3D(0, 100, 10),new Point3D(35, 100, 20),
-                new Point3D(70, 100, 10));
-        part(new Point3D(0,80,10), new Point3D(0,100,10));
-        part(new Point3D(0,80,-60), new Point3D(0,100,-60));
-        part(new Point3D(70,80,10), new Point3D(70,100,10));
-        part(new Point3D(70,80,-60), new Point3D(70,100,-60));
+        part(18,points.get(18),points.get(19),
+                points.get(20),points.get(21),
+                points.get(22),points.get(23),
+                points.get(24), points.get(25),
+                points.get(26));
 
-        part(new Point3D(80,80,-25), new Point3D(80,100,-25));
-        part(new Point3D(35,80,-70), new Point3D(35,100,-70));
-        part(new Point3D(-10,80,-25), new Point3D(-10,100,-25));
-        part(new Point3D(35,80,20), new Point3D(35,100,20));
+        part(27,points.get(27),points.get(28),
+                points.get(29),points.get(30),
+                points.get(31),points.get(32),
+                points.get(33), points.get(34),
+                points.get(35));
+
+        part(36,points.get(36), points.get(37));
+        part(38,points.get(38), points.get(39));
+        part(40,points.get(40), points.get(41));
+        part(42,points.get(42), points.get(43));
+
+        part(44,points.get(44), points.get(45));
+        part(46,points.get(46), points.get(47));
+        part(48,points.get(48), points.get(49));
+        part(50,points.get(50), points.get(51));
+
     }
 
-    private void part(Point3D... points) {
+    private void part(int index,Point3D... points) {
         List<Point3D> point3Ds=new ArrayList<>();
         for(Point3D point:points){
             if(flagAxis==1){
                 double[][] result=Utils.multiply(new double[][]{{ point.getX(), point.getY(), point.getZ(), 1}},Utils.rotateMatrixFactory("X",degreeValue));
                 point.setX(result[0][0]);
-                point.setX(result[0][1]);
-                point.setX(result[0][2]);
+                point.setY(result[0][1]);
+                point.setZ(result[0][2]);
             }else if(flagAxis==2){
                 double[][] result=Utils.multiply(new double[][]{{ point.getX(), point.getY(), point.getZ(), 1}},Utils.rotateMatrixFactory("Y",degreeValue));
                 point.setX(result[0][0]);
-                point.setX(result[0][1]);
-                point.setX(result[0][2]);
+                point.setY(result[0][1]);
+                point.setZ(result[0][2]);
             }else if(flagAxis==3){
                 double[][] result=Utils.multiply(new double[][]{{ point.getX(), point.getY(), point.getZ(), 1}},Utils.rotateMatrixFactory("Z",degreeValue));
                 point.setX(result[0][0]);
-                point.setX(result[0][1]);
-                point.setX(result[0][2]);
+                point.setY(result[0][1]);
+                point.setZ(result[0][2]);
             }
+            //this.points.set(index,point);
+            //index++;
             point3Ds.add(point);
         }
         buildFigureX(point3Ds);
