@@ -1,6 +1,7 @@
 package d3;
 
 import javafx.scene.Group;
+import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,11 @@ public class Coordinates3D {
     }
 
     public void drawAxis(){
-        lines.add(new Line(new Point3D(center.getX(),0),new Point3D(center.getX(),2*center.getY())));
-        lines.add(new Line(new Point3D(0,center.getY()),new Point3D(2*center.getX(),2*center.getY())));
+        lines.add(new Line(center.getX(),center.getY(),center.getX(),0));
+        lines.add(new Line(center.getX(),center.getY(),2*center.getX(),center.getY()));
+        lines.add(new Line(center.getX(),center.getY(),0,2*center.getY()));
         group.getChildren().addAll(lines);
     }
 
-    // lines.add(new Line(center.getX(),0,center.getX(),2*center.getY()));
-    //    lines.add(new Line(0,center.getY(),2*center.getX(),2*center.getY()));
+
 }

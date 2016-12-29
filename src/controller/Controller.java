@@ -11,8 +11,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 
 public class Controller {
     public static final int POSX = -200;
@@ -35,7 +35,9 @@ public class Controller {
     @FXML
     private TextField inputC;
     @FXML
-    private AnchorPane pane;
+    private Pane pane;
+    @FXML
+    private Pane pane3d;
     @FXML
     private AnchorPane window;
     @FXML
@@ -120,6 +122,24 @@ public class Controller {
     @FXML
     private TextField lengthKoha;
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private int projectionX = 0;
+    private int projectionY = 0;
+    @FXML
+    private Pane topPane;
+    @FXML
+    private Pane middlePane;
+    @FXML
+    private Pane bottomPane;
+    @FXML
+    private Slider rotateX;
+    @FXML
+    private Slider rotateY;
+    @FXML
+    private Slider rotateZ;
+    Controller3D controller3D=new Controller3D();
+
+
     public void init() {
         initStartPos((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
         Group root = new Group();
@@ -142,6 +162,8 @@ public class Controller {
         shiftPosY = 0;
         wolfPosX = x;
         wolfPosY = y;
+        projectionX=x/3;
+        projectionY=y/3;
     }
 
     private void buildCoordinates(Group root, int posX, int posY) {
@@ -173,6 +195,12 @@ public class Controller {
     }
 
     private void rebuiltPane(Group root) {
+        pane.getChildren().clear();
+        pane.getChildren().add(root);
+        pane.getChildren().addAll();
+    }
+
+    private void rebuiltPane3D(Group root, Pane pane) {
         pane.getChildren().clear();
         pane.getChildren().add(root);
     }
@@ -405,12 +433,115 @@ public class Controller {
     }
     //PROJECTION//////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void buildProjection(){
-        Group root = new Group();
-        initStartPos((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
-        root.getChildren().addAll(new Line((int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY,0,0));
-        //Controller3D.buildCoordinates(root,(int) window.getWidth() / 2 + POSX, (int) window.getHeight() / 2 + POSY);
-        rebuiltPane(root);
+        Group rootTop = new Group();
+        Group rootMiddle = new Group();
+        Group rootBottom = new Group();
+        initStartPos((int) window.getWidth() / 2 + POSX-20, (int) window.getHeight() / 2 + POSY+80);
+        buildCoordinates(rootTop, projectionX, projectionY);
+        buildCoordinates(rootMiddle, projectionX, projectionY);
+        buildCoordinates(rootBottom, projectionX, projectionY);
+        controller3D.buildFigure(rootTop,rootMiddle,rootBottom,projectionX,projectionY);
+        rebuiltPane3D(rootTop,topPane);
+        rebuiltPane3D(rootMiddle,middlePane);
+        rebuiltPane3D(rootBottom,bottomPane);
+
+        rotateX.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                //Group rootTop = new Group();
+                //Group rootMiddle = new Group();
+                //Group rootBottom = new Group();
+                //initStartPos((int) window.getWidth() / 2 + POSX-20, (int) window.getHeight() / 2 + POSY+80);
+                //buildCoordinates(rootTop, projectionX, projectionY);
+                //buildCoordinates(rootMiddle, projectionX, projectionY);
+                //buildCoordinates(rootBottom, projectionX, projectionY);
+                controller3D.rotateX(newValue.doubleValue()*3.6);
+                //rebuiltPane3D(rootTop,topPane);
+                //rebuiltPane3D(rootMiddle,middlePane);
+                //rebuiltPane3D(rootBottom,bottomPane);
+
+            }
+        });
+        rotateY.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                Group rootTop = new Group();
+                Group rootMiddle = new Group();
+                Group rootBottom = new Group();
+                initStartPos((int) window.getWidth() / 2 + POSX-20, (int) window.getHeight() / 2 + POSY+80);
+                buildCoordinates(rootTop, projectionX, projectionY);
+                buildCoordinates(rootMiddle, projectionX, projectionY);
+                buildCoordinates(rootBottom, projectionX, projectionY);
+                controller3D.rotateY(newValue.doubleValue()*3.6);
+                rebuiltPane3D(rootTop,topPane);
+                rebuiltPane3D(rootMiddle,middlePane);
+                rebuiltPane3D(rootBottom,bottomPane);
+
+            }
+        });
+        rotateY.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                Group rootTop = new Group();
+                Group rootMiddle = new Group();
+                Group rootBottom = new Group();
+                initStartPos((int) window.getWidth() / 2 + POSX-20, (int) window.getHeight() / 2 + POSY+80);
+                buildCoordinates(rootTop, projectionX, projectionY);
+                buildCoordinates(rootMiddle, projectionX, projectionY);
+                buildCoordinates(rootBottom, projectionX, projectionY);
+                controller3D.rotateZ(newValue.doubleValue()*3.6);
+                rebuiltPane3D(rootTop,topPane);
+                rebuiltPane3D(rootMiddle,middlePane);
+                rebuiltPane3D(rootBottom,bottomPane);
+            }
+        });
     }
+
+//    public void buildProjection(){
+//        Group rootTop = new Group();
+//        Group rootMiddle = new Group();
+//        Group rootBottom = new Group();
+//        initStartPos((int) window.getWidth() / 2 + POSX-20, (int) window.getHeight() / 2 + POSY+80);
+//        buildCoordinates(rootTop, projectionX, projectionY);
+//        buildCoordinates(rootMiddle, projectionX, projectionY);
+//        buildCoordinates(rootBottom, projectionX, projectionY);
+//        Controller3D.buildFigure(rootTop,rootMiddle,rootBottom,projectionX,projectionY);
+//        rebuiltPane3D(rootTop,topPane);
+//        rebuiltPane3D(rootMiddle,middlePane);
+//        rebuiltPane3D(rootBottom,bottomPane);
+//        listeners(rootTop, rootMiddle, rootBottom);
+//    }
+
+//    private void listeners(final Group rootTop, final Group rootMiddle, final Group rootBottom) {
+//        rotateX.valueProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                Controller3D.rotateX(newValue.doubleValue()*3.6);
+//                rebuiltPane3D(rootTop,topPane);
+//                rebuiltPane3D(rootMiddle,middlePane);
+//                rebuiltPane3D(rootBottom,bottomPane);
+//            }
+//        });
+//        rotateY.valueProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                Controller3D.rotateY(newValue.doubleValue()*3.6);
+//                rebuiltPane3D(rootTop,topPane);
+//                rebuiltPane3D(rootMiddle,middlePane);
+//                rebuiltPane3D(rootBottom,bottomPane);
+//            }
+//        });
+//        rotateY.valueProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                Controller3D.rotateZ(newValue.doubleValue()*3.6);
+//                rebuiltPane3D(rootTop,topPane);
+//                rebuiltPane3D(rootMiddle,middlePane);
+//                rebuiltPane3D(rootBottom,bottomPane);
+//            }
+//        });
+//    }
+
 }
 
 

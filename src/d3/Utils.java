@@ -33,9 +33,10 @@ public class Utils {
         return c;
     }
 
-    public static double[][] rotateMatrixFactory(String axis, double rotateDegree) throws Exception {
+    public static double[][] rotateMatrixFactory(String axis, double rotateDegree) {
+        System.out.print(rotateDegree+" ");
         rotateDegree =Math.toRadians(rotateDegree);
-
+        System.out.println(rotateDegree);
         switch (axis) {
             case "X" : {
                 return new double[][]  {
@@ -61,9 +62,8 @@ public class Utils {
                         {0, 0, 0, 1}
                 };
             }
-            default: {
-                throw new Exception();
-            }
+            default:
+                return null;
         }
     }
 }
