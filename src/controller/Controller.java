@@ -461,7 +461,7 @@ public class Controller {
                 controller3D.getFigure3D().setBottom(rootBottom);
                 //controller3D.createFigureObject(rootTop, rootMiddle, rootBottom, projectionX, projectionY);
                 //rotateFigure(newValue,yValue,zValue,rootTop, rootMiddle, rootBottom);
-                controller3D.rotateX(newValue.doubleValue()*3.6);
+                controller3D.rotateX(newValue.doubleValue());
                 //controller3D.buildFigure();
                 rebuildPanesIn3D(rootTop, rootMiddle, rootBottom);
 
@@ -480,7 +480,7 @@ public class Controller {
                 controller3D.getFigure3D().setBottom(rootBottom);
 
                 //rotateFigure(xValue,newValue,zValue,rootTop, rootMiddle, rootBottom);
-                controller3D.rotateY(newValue.doubleValue()*3.6);
+                controller3D.rotateY(newValue.doubleValue());
                 //controller3D.buildFigure();
                 rebuildPanesIn3D(rootTop, rootMiddle, rootBottom);
 
@@ -496,7 +496,7 @@ public class Controller {
                 controller3D.getFigure3D().setTop(rootTop);
                 controller3D.getFigure3D().setMiddle(rootMiddle);
                 controller3D.getFigure3D().setBottom(rootBottom);
-                controller3D.rotateZ(newValue.doubleValue()*3.6);
+                controller3D.rotateZ(newValue.doubleValue());
                 rebuildPanesIn3D(rootTop, rootMiddle, rootBottom);
             }
         });
